@@ -66,6 +66,9 @@ class NumentaDetector(AnomalyDetector):
     # Retrieve the anomaly score and write it to a file
     rawScore = result.inferences["anomalyScore"]
 
+    # Adjust magnitude before the moving window
+    rawScore = rawScore  # ** 2
+
     if self.useLikelihood:
       # Compute log(anomaly likelihood)
       anomalyScore = self.anomalyLikelihood.anomalyProbability(

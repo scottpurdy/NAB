@@ -1,5 +1,5 @@
 # ----------------------------------------------------------------------
-# Copyright (C) 2015, Numenta, Inc.  Unless you have an agreement
+# Copyright (C) 2015-2016, Numenta, Inc.  Unless you have an agreement
 # with Numenta, Inc., for a separate license for this software code, the
 # following terms and conditions apply:
 #
@@ -17,16 +17,20 @@
 #
 # http://numenta.org/licenses/
 # ----------------------------------------------------------------------
+
 """
-This file contains plotting tools for NAB data and results. Run this script to
-generate example plots.
+Plotting tools for NAB data and results.
+
+Run this script to generate example plots.
 """
 
 import itertools
 import os
-import pandas as pd
-import plotly.plotly as py
 
+import numpy
+import pandas as pd
+from plotly import tools
+from plotly.offline import plot
 from plotly.graph_objs import (
     Bar, Data, Figure, Layout, Line, Marker, Scatter, XAxis, YAxis)
 
@@ -55,29 +59,8 @@ class PlotNAB(object):
   """Plot NAB data and results files with the plotly API."""
 
   def __init__(self,
-               apiKey=None,
-               username=None,
                dataFile=None,
                dataName=""):
-
-    # Instantiate API credentials.
-    try:
-      self.apiKey = apiKey if apiKey else os.environ["PLOTLY_API_KEY"]
-    except:
-      print ("Missing PLOTLY_API_KEY environment variable. If you have a "
-        "key, set it with $ export PLOTLY_API_KEY=api_key\n"
-        "You can retrieve a key by registering for the Plotly API at "
-        "http://www.plot.ly")
-      raise OSError("Missing API key.")
-    try:
-      self.username = username if username else os.environ["PLOTLY_USERNAME"]
-    except:
-      print ("Missing PLOTLY_USERNAME environment variable. If you have a "
-        "username, set it with $ export PLOTLY_USERNAME=username\n"
-        "You can sign up for the Plotly API at http://www.plot.ly")
-      raise OSError("Missing username.")
-
-    py.sign_in(self.username, self.apiKey)
 
     self._setupDirectories()
     self._getThresholds()
@@ -249,7 +232,7 @@ class PlotNAB(object):
 
     # Query plotly
     fig = Figure(data=data, layout=layout)
-    plot_url = py.plot(fig)
+    plot_url = plot(fig)
     print "Data plot URL: ", plot_url
 
     return plot_url
@@ -310,7 +293,7 @@ class PlotNAB(object):
 
     # Query plotly
     fig = Figure(data=data, layout=layout)
-    plot_url = py.plot(fig)
+    plot_url = plot(fig)
     print "Detections plot URL: ", plot_url
 
     return plot_url
