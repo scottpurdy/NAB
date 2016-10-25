@@ -19,6 +19,7 @@
 # ----------------------------------------------------------------------
 
 import math
+import os
 
 from nupic.algorithms import anomaly_likelihood
 from nupic.frameworks.opf.common_models.cluster_params import (
@@ -67,7 +68,7 @@ class NumentaDetector(AnomalyDetector):
     rawScore = result.inferences["anomalyScore"]
 
     # Adjust magnitude before the moving window
-    rawScore = rawScore  # ** 2
+    rawScore = rawScore ** float(os.environ["NTA_LIKELIHOOD_NONLINEAR_FACTOR"])
 
     if self.useLikelihood:
       # Compute log(anomaly likelihood)

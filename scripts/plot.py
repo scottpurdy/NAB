@@ -369,8 +369,8 @@ if __name__ == "__main__":
 
   # To use this script modify one of the code samples below.
 
-  # Sample 1: shows how to plot a set of raw data files with their labels.
-  # You can optionally show the windows or probationary period.
+   Sample 1: shows how to plot a set of raw data files with their labels.
+   You can optionally show the windows or probationary period.
 
   dataFiles = (
       "realKnownCause/machine_temperature_system_failure.csv",
@@ -398,17 +398,37 @@ if __name__ == "__main__":
   # also use one of the non-standard profiles.
 
   # dataFiles = (
-  #     "realKnownCause/machine_temperature_system_failure.csv",
-  #     "realKnownCause/ambient_temperature_system_failure.csv"
+  #     "artificialWithAnomaly/art_daily_nojump.csv",
+  #     "realAWSCloudwatch/ec2_disk_write_bytes_c0d644.csv",
+  #     "realAWSCloudwatch/ec2_network_in_5abac7.csv",
+  #     "realAWSCloudwatch/rds_cpu_utilization_cc0c53.csv",
+  #     "realAdExchange/exchange-2_cpc_results.csv",
+  #     "realAdExchange/exchange-3_cpc_results.csv",
+  #     "realAdExchange/exchange-3_cpm_results.csv",
+  #     "realAdExchange/exchange-4_cpm_results.csv",
+  #     "realKnownCause/nyc_taxi.csv",
+  #     "realKnownCause/rogue_agent_key_hold.csv",
+  #     "realKnownCause/rogue_agent_key_updown.csv",
+  #     "realTraffic/speed_7578.csv",
+  #     "realTweets/Twitter_volume_AAPL.csv",
+  #     "realTweets/Twitter_volume_AMZN.csv",
+  #     "realTweets/Twitter_volume_CRM.csv",
+  #     "realTweets/Twitter_volume_GOOG.csv",
+  #     "realAWSCloudwatch/ec2_cpu_utilization_fe7f93.csv",
+  #     "realAWSCloudwatch/iio_us-east-1_i-a2eb1cd9_NetworkIn.csv",
+  #     "realAdExchange/exchange-4_cpc_results.csv",
+  #     "realTraffic/TravelTime_387.csv",
+  #     "realTweets/Twitter_volume_UPS.csv",
   # )
-  # dataNames = (
-  #     "Machine Temperature Sensor Data",
-  #     "Ambient Temperature System Failure Data"
-  # )
-  # detectors=["numenta", "null"]
-  #
+  # #dataNames = (
+  # #    "Machine Temperature Sensor Data",
+  # #    "Ambient Temperature System Failure Data"
+  # #)
+  # dataNames = dataFiles
+  # detectors=["numenta"]
+  # 
   # assert len(dataFiles) == len(dataNames)
-  #
+  # 
   # # Create the list of result filenames for each detector
   # allResultsFiles = []
   # for f in dataFiles:
@@ -417,7 +437,7 @@ if __name__ == "__main__":
   #     filename = d + "/"+f.replace("/","/"+d+"_")
   #     resultFiles.append(filename)
   #   allResultsFiles.append(resultFiles)
-  #
+  # 
   # # Now plot everything
   # for i in range(len(dataFiles)):
   #   dataPlotter = PlotNAB(
