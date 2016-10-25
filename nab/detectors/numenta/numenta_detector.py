@@ -91,6 +91,9 @@ class NumentaDetector(AnomalyDetector):
       tmImplementation = "cpp"
     )["modelConfig"]
 
+    # Use Python implementation with modified boosting
+    modelParams["modelParams"]["spParams"]["spatialImp"] = "py"
+
     self._setupEncoderParams(
       modelParams["modelParams"]["sensorParams"]["encoders"])
 
