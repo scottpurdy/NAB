@@ -93,6 +93,8 @@ class NumentaDetector(AnomalyDetector):
 
     # Use Python implementation with modified boosting
     modelParams["modelParams"]["spParams"]["spatialImp"] = "py"
+    spMaxBoost = float(os.environ["NTA_SP_MAX_BOOST"])
+    modelParams["modelParams"]["spParams"]["maxBoost"] = spMaxBoost
 
     self._setupEncoderParams(
       modelParams["modelParams"]["sensorParams"]["encoders"])
