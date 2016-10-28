@@ -67,7 +67,8 @@ def plotResults(ts, values, anomalyScores, rawScores, labels, threshold):
   data2 = []
   data2.extend(getAnomalyScorePlot(ts, anomalyScores))
   data3 = []
-  data3.extend(getAnomalyScorePlot(ts, computeAnomalyScores(ts, rawScores, values)))
+  #data3.extend(getAnomalyScorePlot(ts, computeAnomalyScores(ts, rawScores, values)))
+  data3.extend(getAnomalyScorePlot(ts, rawScores))
   fig = tools.make_subplots(rows=3, cols=1)
   for trace in data1:
     fig.append_trace(trace, 1, 1)
@@ -113,11 +114,24 @@ def computeAnomalyScores(ts, rawScores, values):
   )
 
   anomalyScores = []
+  minVal = None
+  maxVal = None
   for rawScore, value, dt in zip(rawScores, values, ts):
-    rawScore = rawScore ** 0.5
+    forceAnomaly = False
+    if minVal != maxVal:
+      if value > (((maxVal-minVal) * 0.2) + maxVal):
+        forceAnomaly = True
+    #rawScore = rawScore ** 0.5
     anomalyScore = likelihood.anomalyProbability(value, rawScore, dt)
     logScore = likelihood.computeLogLikelihood(anomalyScore)
+    if forceAnomaly:
+      logScore = 1.0
     anomalyScores.append(logScore)
+
+    if minVal is None or value < minVal:
+      minVal = value
+    if maxVal is None or value > maxVal:
+      maxVal = value
   return anomalyScores
 
 

@@ -42,6 +42,9 @@ class NumentaDetector(AnomalyDetector):
     self.model = None
     self.sensorParams = None
     self.anomalyLikelihood = None
+    self.minVal = None
+    self.maxVal = None
+    self.spatialTolerance = float(os.environ["NTA_SPATIAL_TOLERANCE"])
 
     # Set this to False if you want to get results based on raw scores
     # without using AnomalyLikelihood. This will give worse results, but
@@ -64,17 +67,34 @@ class NumentaDetector(AnomalyDetector):
     # Send it to Numenta detector and get back the results
     result = self.model.run(inputData)
 
+    # Get the value
+    value = inputData["value"]
+
     # Retrieve the anomaly score and write it to a file
     rawScore = result.inferences["anomalyScore"]
 
     # Adjust magnitude before the moving window
     rawScore = rawScore ** float(os.environ["NTA_LIKELIHOOD_NONLINEAR_FACTOR"])
 
+    # Update min/max values and check if there is a spatial anomaly
+    spatialAnomaly = False
+    if self.minVal != self.maxVal:
+      maxExpected = ((maxVal - minVal) * self.spatialTolerance) + maxVal
+      minExpected = minVal - ((maxVal - minVal) * self.spatialTolerance)
+      if value > maxExpected or value < minExpected:
+        spatialAnomaly = True
+    if self.maxVal is None or value > self.maxVal:
+      self.maxVal = value
+    if self.minVal is None or value < self.minVal:
+      self.minVal = value
+
     if self.useLikelihood:
       # Compute log(anomaly likelihood)
       anomalyScore = self.anomalyLikelihood.anomalyProbability(
         inputData["value"], rawScore, inputData["timestamp"])
       logScore = self.anomalyLikelihood.computeLogLikelihood(anomalyScore)
+      if spatialAnomaly:
+        logScore = 1.0
       return (logScore, rawScore)
 
     return (rawScore, rawScore)
