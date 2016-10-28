@@ -79,8 +79,8 @@ class NumentaDetector(AnomalyDetector):
     # Update min/max values and check if there is a spatial anomaly
     spatialAnomaly = False
     if self.minVal != self.maxVal:
-      maxExpected = ((maxVal - minVal) * self.spatialTolerance) + maxVal
-      minExpected = minVal - ((maxVal - minVal) * self.spatialTolerance)
+      maxExpected = ((self.maxVal - self.minVal) * self.spatialTolerance) + self.maxVal
+      minExpected = self.minVal - ((self.maxVal - self.minVal) * self.spatialTolerance)
       if value > maxExpected or value < minExpected:
         spatialAnomaly = True
     if self.maxVal is None or value > self.maxVal:
